@@ -3729,6 +3729,7 @@ function clearOrganogram(){
 }
 function editOrgNode(id){ editOrgNodeModal(id, null); }
 function editOrgNodeModal(id, parentId){
+  state.organogram = state.organogram || {nodes:[]};
   const isNew = !id;
   const node = isNew ? {id:'org_'+Date.now(), parentId:parentId||null, title:'', name:'', color:'navy'} : state.organogram.nodes.find(n=>n.id===id);
   if(!node) return;
@@ -3801,12 +3802,14 @@ function addOrgNode(parentId){
   state.organogram.nodes.push({id:tmpId, parentId:parentId||null, title:'', name:'', color:'navy', _draft:true});
   editOrgNodeModal(tmpId, parentId);
 }
-const _origCloseModalOrg = closeModal;
+const _origCloseModalOrg = window.closeModal || closeModal;
 window.closeModal = function(){
-  if(state.organogram && state.organogram.nodes){
-    state.organogram.nodes = state.organogram.nodes.filter(n=>!(n._draft && !n.title));
-  }
-  _origCloseModalOrg();
+  try {
+    if(typeof state !== 'undefined' && state && state.organogram && Array.isArray(state.organogram.nodes)){
+      state.organogram.nodes = state.organogram.nodes.filter(n=>!(n._draft && !n.title));
+    }
+  } catch(e){ /* ignore */ }
+  if(typeof _origCloseModalOrg === 'function') _origCloseModalOrg();
 };
 function deleteOrgNode(id){
   const n = state.organogram.nodes.find(x=>x.id===id);
