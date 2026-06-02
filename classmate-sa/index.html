@@ -599,6 +599,50 @@ h2.l-h .grad{background:linear-gradient(120deg,var(--primary-dark),var(--accent-
 .lib-empty h4{font-size:15px;color:var(--primary-darker);margin-bottom:6px;font-weight:800}
 .lib-empty p{font-size:13.5px;line-height:1.55;max-width:420px;margin:0 auto 12px}
 .lib-empty .em-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+
+/* Organogram tree */
+.org-canvas{padding:30px 12px 20px;overflow-x:auto;min-height:240px;background:linear-gradient(180deg,var(--card-tint),transparent 60%)}
+.org-tree{display:flex;flex-direction:column;align-items:center;gap:0;min-width:fit-content;margin:0 auto}
+.org-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:flex-start;position:relative;padding-top:18px}
+.org-row:first-child{padding-top:0}
+.org-row:before{content:'';position:absolute;top:0;left:50%;width:2px;height:18px;background:var(--accent);transform:translateX(-1px)}
+.org-row:first-child:before{display:none}
+.org-branch{display:flex;flex-direction:column;align-items:center;position:relative}
+.org-branch + .org-branch:before{content:'';position:absolute;top:9px;left:-7px;width:14px;height:2px;background:var(--accent)}
+.org-node{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:10px;padding:9px 14px;min-width:155px;max-width:200px;text-align:center;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.15);cursor:pointer;transition:transform .12s,box-shadow .12s}
+.org-node:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.22)}
+.org-node.gold{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:var(--primary-darker)}
+.org-node.green{background:linear-gradient(135deg,#3a8460,#1f5f4a);color:#fff}
+.org-node.lav{background:linear-gradient(135deg,#9484c8,#6d5fa3);color:#fff}
+.org-node.empty-add{background:var(--card-tint);border:2px dashed var(--line);color:var(--muted);cursor:pointer;padding:10px 14px;font-size:13px}
+.org-node.empty-add:hover{border-color:var(--accent);color:var(--primary-dark)}
+.org-node-title{font-weight:800;font-size:13px;line-height:1.25}
+.org-node-name{font-size:11.5px;opacity:.92;margin-top:3px;font-style:italic}
+.org-node-acts{display:flex;gap:3px;justify-content:center;margin-top:6px;opacity:.85}
+.org-node-acts button{background:rgba(255,255,255,.18);border:none;color:inherit;width:22px;height:22px;border-radius:5px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.org-node-acts button:hover{background:rgba(255,255,255,.35)}
+.org-node.gold .org-node-acts button{background:rgba(26,46,79,.15)}
+.org-node.gold .org-node-acts button:hover{background:rgba(26,46,79,.28)}
+.org-children{display:flex;flex-direction:column;align-items:center;gap:0;margin-top:6px;position:relative}
+.org-children:before{content:'';position:absolute;top:0;left:50%;width:2px;height:14px;background:var(--accent);transform:translateX(-1px)}
+.org-children .org-row{padding-top:14px}
+.org-children .org-row:before{height:14px}
+.org-empty-state{text-align:center;color:var(--muted);padding:50px 20px;font-size:14.5px}
+.org-empty-state h4{font-size:16px;color:var(--primary-darker);margin-bottom:10px;font-weight:800}
+.org-empty-state .em-actions{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+@media print{
+  .page-actions,.sidebar,.scrim,.header,.footer{display:none!important}
+  .org-canvas{background:none;padding:10px 0}
+  .org-node{box-shadow:none;border:1px solid #1A2E4F;background:#fff!important;color:#1A2E4F!important}
+  .org-node.gold{background:#FAF1DA!important;color:#1A2E4F!important}
+  .org-node-acts{display:none}
+}
+@media(max-width:680px){
+  .org-row{flex-direction:column;align-items:center;gap:14px}
+  .org-row:before{display:none}
+  .org-branch + .org-branch:before{display:none}
+  .org-node{min-width:200px}
+}
 .wb-q-row{display:grid;grid-template-columns:auto 1fr 1fr 60px 30px;gap:8px;padding:8px 0;align-items:center;border-bottom:1px solid var(--line-soft)}
 .wb-q-row .num{font-weight:800;color:var(--accent-dark);width:24px;text-align:center}
 .wb-q-row input,.wb-q-row textarea{padding:6px 9px;border:1px solid var(--line);border-radius:7px;font-size:13px;width:100%;font-family:inherit;background:#fff}
@@ -1073,6 +1117,7 @@ body.has-logo .mobile-bar .school-logo-mini{display:inline-block}
     <div class="sb-section-title school-only">Leadership</div>
     <nav class="sb-nav school-only">
       <button class="sb-item" data-page="headmaster"><span class="ico">🏫</span>Headmaster View</button>
+      <button class="sb-item" data-page="organogram"><span class="ico">🌳</span>Organogram</button>
       <button class="sb-item" data-page="staff"><span class="ico">🧑‍🏫</span>Staff Roster</button>
       <button class="sb-item" data-page="directory"><span class="ico">📒</span>School Directory</button>
     </nav>
@@ -1711,6 +1756,22 @@ body.has-logo .mobile-bar .school-logo-mini{display:inline-block}
       </div>
     </section>
 
+    <!-- ORGANOGRAM (school edition only) -->
+    <section class="page" id="page-organogram" style="display:none">
+      <div class="page-head">
+        <div><span class="tag">School Edition</span><h1>🌳 School Organogram</h1><p>Your school's staff structure — at a glance. Principal at the top, Deputy and HODs below, Educators under each HOD, support staff in their branch. Click any block to rename it, tap ＋ to add a person, × to remove. Add your own blocks (Sports Master, SGB Chair, IT, Boarding Master…). Printable.</p></div>
+        <div class="page-actions">
+          <button class="btn btn-soft btn-sm" onclick="loadOrganogramTemplate('secondary')">🏫 Secondary template</button>
+          <button class="btn btn-soft btn-sm" onclick="loadOrganogramTemplate('primary')">🎒 Primary template</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Print</button>
+          <button class="btn btn-danger btn-sm" onclick="clearOrganogram()">Clear all</button>
+        </div>
+      </div>
+      <div class="card">
+        <div id="org-canvas" class="org-canvas"></div>
+      </div>
+    </section>
+
     <!-- HEADMASTER (school edition only) -->
     <section class="page" id="page-headmaster" style="display:none">
       <div class="page-head">
@@ -2104,6 +2165,7 @@ function defaultState(){
     graduation: {title:'',date:'',time:'',venue:'',theme:'',dressCode:'',status:'planning',notes:'',graduates:[],programme:[],budget:[]},
     library: {pastPapers:[], schemes:[], worksheets:[], questionBank:[]},
     dailyAssessments: [],
+    organogram: {nodes:[]},
     lastBackup: null,
     welcomed: false
   };
@@ -3544,6 +3606,220 @@ renderers.broadcast = function(){
   seedBroadcastTemplatesIfNeeded();
   _origBroadcastRenderSeed();
 };
+
+/* ============================================================
+   ORGANOGRAM — editable hierarchical org chart (SA)
+   ============================================================ */
+const ORG_TEMPLATES = {
+  secondary: [
+    {id:'org_sgb',     parentId:null,        title:'School Governing Body (SGB)', color:'gold'},
+    {id:'org_princ',   parentId:'org_sgb',   title:'Principal',                color:'navy'},
+    {id:'org_dep1',    parentId:'org_princ', title:'Deputy Principal · Academic', color:'navy'},
+    {id:'org_dep2',    parentId:'org_princ', title:'Deputy Principal · Admin', color:'navy'},
+    {id:'org_finance', parentId:'org_princ', title:'School Finance Officer',   color:'gold'},
+    {id:'org_admin',   parentId:'org_princ', title:'School Administrator',     color:'gold'},
+    {id:'org_hod_sci', parentId:'org_dep1',  title:'HOD Sciences & Maths',     color:'gold'},
+    {id:'org_hod_lang',parentId:'org_dep1',  title:'HOD Languages',            color:'gold'},
+    {id:'org_hod_comm',parentId:'org_dep1',  title:'HOD Commerce',             color:'gold'},
+    {id:'org_hod_hum', parentId:'org_dep1',  title:'HOD Humanities',           color:'gold'},
+    {id:'org_hod_arts',parentId:'org_dep1',  title:'HOD Arts & Culture',       color:'gold'},
+    {id:'org_hod_tech',parentId:'org_dep1',  title:'HOD Technology & IT',      color:'gold'},
+    {id:'org_hod_lo',  parentId:'org_dep2',  title:'HOD Life Orientation',     color:'gold'},
+    {id:'org_t_maths', parentId:'org_hod_sci',  title:'Mathematics Educator',  color:'green'},
+    {id:'org_t_phys',  parentId:'org_hod_sci',  title:'Physical Sciences Educator', color:'green'},
+    {id:'org_t_life',  parentId:'org_hod_sci',  title:'Life Sciences Educator',color:'green'},
+    {id:'org_lab',     parentId:'org_hod_sci',  title:'Lab Technician',        color:'lav'},
+    {id:'org_t_eng',   parentId:'org_hod_lang', title:'English Educator',      color:'green'},
+    {id:'org_t_afr',   parentId:'org_hod_lang', title:'Afrikaans Educator',    color:'green'},
+    {id:'org_t_zulu',  parentId:'org_hod_lang', title:'isiZulu / Home Lang Educator', color:'green'},
+    {id:'org_t_acc',   parentId:'org_hod_comm', title:'Accounting Educator',   color:'green'},
+    {id:'org_t_bus',   parentId:'org_hod_comm', title:'Business Studies Educator', color:'green'},
+    {id:'org_t_econ',  parentId:'org_hod_comm', title:'Economics Educator',    color:'green'},
+    {id:'org_t_hist',  parentId:'org_hod_hum',  title:'History Educator',      color:'green'},
+    {id:'org_t_geo',   parentId:'org_hod_hum',  title:'Geography Educator',    color:'green'},
+    {id:'org_t_lo',    parentId:'org_hod_lo',   title:'Life Orientation Educator', color:'green'},
+    {id:'org_t_va',    parentId:'org_hod_arts', title:'Visual Arts Educator',  color:'green'},
+    {id:'org_t_drama', parentId:'org_hod_arts', title:'Dramatic Arts Educator',color:'green'},
+    {id:'org_t_music', parentId:'org_hod_arts', title:'Music Educator',        color:'green'},
+    {id:'org_t_it',    parentId:'org_hod_tech', title:'IT / CAT Educator',     color:'green'},
+    {id:'org_t_egd',   parentId:'org_hod_tech', title:'EGD Educator',          color:'green'},
+    {id:'org_secy',    parentId:'org_admin',  title:'School Secretary',        color:'lav'},
+    {id:'org_recep',   parentId:'org_admin',  title:'Receptionist',            color:'lav'},
+    {id:'org_grd',     parentId:'org_admin',  title:'Grounds Supervisor',      color:'gold'},
+    {id:'org_grd1',    parentId:'org_grd',    title:'General Worker',          color:'lav'},
+    {id:'org_grd2',    parentId:'org_grd',    title:'General Worker',          color:'lav'},
+    {id:'org_security',parentId:'org_admin',  title:'Security',                color:'lav'}
+  ],
+  primary: [
+    {id:'orgP_sgb',   parentId:null,         title:'School Governing Body (SGB)', color:'gold'},
+    {id:'orgP_princ', parentId:'orgP_sgb',   title:'Principal',                color:'navy'},
+    {id:'orgP_dep',   parentId:'orgP_princ', title:'Deputy Principal',         color:'navy'},
+    {id:'orgP_finance',parentId:'orgP_princ', title:'Finance Officer',         color:'gold'},
+    {id:'orgP_sec',   parentId:'orgP_princ', title:'School Secretary',         color:'gold'},
+    {id:'orgP_hod_fp',parentId:'orgP_dep',   title:'HOD Foundation Phase (R–3)', color:'gold'},
+    {id:'orgP_hod_ip',parentId:'orgP_dep',   title:'HOD Intermediate Phase (4–6)', color:'gold'},
+    {id:'orgP_hod_sp',parentId:'orgP_dep',   title:'HOD Senior Phase (7)',     color:'gold'},
+    {id:'orgP_t_gR',  parentId:'orgP_hod_fp', title:'Grade R Educator',        color:'green'},
+    {id:'orgP_t_g1',  parentId:'orgP_hod_fp', title:'Grade 1 Educator',        color:'green'},
+    {id:'orgP_t_g2',  parentId:'orgP_hod_fp', title:'Grade 2 Educator',        color:'green'},
+    {id:'orgP_t_g3',  parentId:'orgP_hod_fp', title:'Grade 3 Educator',        color:'green'},
+    {id:'orgP_t_g4',  parentId:'orgP_hod_ip', title:'Grade 4 Educator',        color:'green'},
+    {id:'orgP_t_g5',  parentId:'orgP_hod_ip', title:'Grade 5 Educator',        color:'green'},
+    {id:'orgP_t_g6',  parentId:'orgP_hod_ip', title:'Grade 6 Educator',        color:'green'},
+    {id:'orgP_t_g7',  parentId:'orgP_hod_sp', title:'Grade 7 Educator',        color:'green'},
+    {id:'orgP_aide_R',parentId:'orgP_t_gR',  title:'Teaching Assistant',       color:'lav'},
+    {id:'orgP_aide_1',parentId:'orgP_t_g1',  title:'Teaching Assistant',       color:'lav'},
+    {id:'orgP_grd',   parentId:'orgP_princ', title:'Grounds Supervisor',       color:'gold'},
+    {id:'orgP_grd1',  parentId:'orgP_grd',   title:'General Worker',           color:'lav'},
+    {id:'orgP_security',parentId:'orgP_princ',title:'Security',                color:'lav'}
+  ]
+};
+
+renderers.organogram = function(){
+  state.organogram = state.organogram || {nodes:[]};
+  const canvas = document.getElementById('org-canvas');
+  if(!canvas) return;
+  const nodes = state.organogram.nodes;
+  if(!nodes.length){
+    canvas.innerHTML = `<div class="org-empty-state">
+      <h4>🌳 No organogram yet</h4>
+      <p>Start with a template — you can edit every block, add custom roles (Sports Master, Boarding Master, SGB Chair…), and remove anything you don\'t need.</p>
+      <div class="em-actions">
+        <button class="btn btn-primary btn-sm" onclick="loadOrganogramTemplate('secondary')">🏫 Use Secondary template</button>
+        <button class="btn btn-primary btn-sm" onclick="loadOrganogramTemplate('primary')">🎒 Use Primary template</button>
+        <button class="btn btn-soft btn-sm" onclick="addOrgNode(null)">＋ Start blank</button>
+      </div>
+    </div>`;
+    return;
+  }
+  const childrenOf = {};
+  nodes.forEach(n=>{
+    const p = n.parentId || '__root__';
+    childrenOf[p] = childrenOf[p] || [];
+    childrenOf[p].push(n);
+  });
+  function renderNode(n){
+    const kids = childrenOf[n.id] || [];
+    return `<div class="org-branch">
+      <div class="org-node ${esc(n.color||'navy')}" onclick="event.stopPropagation();editOrgNode('${n.id}')">
+        <div class="org-node-title">${esc(n.title||'(no title)')}</div>
+        ${n.name?`<div class="org-node-name">${esc(n.name)}</div>`:''}
+        <div class="org-node-acts" onclick="event.stopPropagation()">
+          <button onclick="addOrgNode('${n.id}')" title="Add subordinate">＋</button>
+          <button onclick="editOrgNode('${n.id}')" title="Edit">✎</button>
+          <button onclick="deleteOrgNode('${n.id}')" title="Delete">×</button>
+        </div>
+      </div>
+      ${kids.length ? `<div class="org-children"><div class="org-row">${kids.map(renderNode).join('')}</div></div>` : ''}
+    </div>`;
+  }
+  const roots = childrenOf['__root__'] || [];
+  canvas.innerHTML = `<div class="org-tree"><div class="org-row">${roots.map(renderNode).join('')}</div></div>`;
+};
+
+function loadOrganogramTemplate(which){
+  if((state.organogram?.nodes||[]).length && !confirm('Replace the current organogram with the ' + which + ' template? Your current structure will be lost.')) return;
+  state.organogram = {nodes: ORG_TEMPLATES[which].map(n=>({...n}))};
+  save(); renderers.organogram(); toast('Loaded ' + which + ' template');
+}
+function clearOrganogram(){
+  if(!confirm('Clear the entire organogram? This cannot be undone.')) return;
+  state.organogram = {nodes:[]};
+  save(); renderers.organogram();
+}
+function editOrgNode(id){ editOrgNodeModal(id, null); }
+function editOrgNodeModal(id, parentId){
+  const isNew = !id;
+  const node = isNew ? {id:'org_'+Date.now(), parentId:parentId||null, title:'', name:'', color:'navy'} : state.organogram.nodes.find(n=>n.id===id);
+  if(!node) return;
+  const colors = [
+    {k:'navy', n:'Navy (Leadership)'},
+    {k:'gold', n:'Gold (HOD / Senior)'},
+    {k:'green',n:'Green (Educator)'},
+    {k:'lav',  n:'Lavender (Support)'}
+  ];
+  showModal(`
+    <h3>${isNew?'Add':'Edit'} role</h3>
+    <div class="field"><label class="label">Role / Title</label>
+      <input class="input" id="org-title" value="${esc(node.title||'')}" placeholder="e.g. HOD Sciences, Sports Master, SGB Chair">
+    </div>
+    <div class="field"><label class="label">Person\'s name (optional)</label>
+      <input class="input" id="org-name" value="${esc(node.name||'')}" placeholder="e.g. Mrs J. van der Merwe">
+    </div>
+    <div class="field"><label class="label">Block colour</label>
+      <select class="select" id="org-color">
+        ${colors.map(c=>`<option value="${c.k}" ${node.color===c.k?'selected':''}>${esc(c.n)}</option>`).join('')}
+      </select>
+    </div>
+    ${!isNew ? `<div class="field"><label class="label">Reports to (parent block)</label>
+      <select class="select" id="org-parent">
+        <option value="">— Top level —</option>
+        ${state.organogram.nodes.filter(n=>n.id!==id && !isDescendantOf(n.id, id)).map(n=>`<option value="${n.id}" ${node.parentId===n.id?'selected':''}>${esc(n.title)}</option>`).join('')}
+      </select>
+    </div>` : ''}
+    <div class="modal-actions">
+      ${!isNew ? `<button class="btn btn-danger" onclick="deleteOrgNode('${node.id}')">Delete</button>` : ''}
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveOrgNode('${node.id}',${isNew})">Save</button>
+    </div>
+  `);
+  setTimeout(()=>document.getElementById('org-title').focus(),50);
+}
+function isDescendantOf(candidate, ancestor){
+  const map = {}; state.organogram.nodes.forEach(n=>map[n.id]=n);
+  let cur = map[candidate];
+  while(cur){
+    if(cur.parentId === ancestor) return true;
+    cur = map[cur.parentId];
+  }
+  return false;
+}
+function saveOrgNode(id, isNew){
+  const data = {
+    id,
+    title: document.getElementById('org-title').value.trim(),
+    name:  document.getElementById('org-name').value.trim(),
+    color: document.getElementById('org-color').value
+  };
+  if(!data.title){ toast('Title is required'); return; }
+  state.organogram = state.organogram || {nodes:[]};
+  const ex = state.organogram.nodes.find(n=>n.id===id);
+  if(ex){
+    Object.assign(ex, data);
+    delete ex._draft;
+    const newParent = document.getElementById('org-parent');
+    if(newParent) ex.parentId = newParent.value || null;
+  } else {
+    data.parentId = null;
+    state.organogram.nodes.push(data);
+  }
+  save(); closeModal(); renderers.organogram(); toast(isNew?'Added':'Updated');
+}
+function addOrgNode(parentId){
+  const tmpId = 'org_'+Date.now();
+  state.organogram = state.organogram || {nodes:[]};
+  state.organogram.nodes.push({id:tmpId, parentId:parentId||null, title:'', name:'', color:'navy', _draft:true});
+  editOrgNodeModal(tmpId, parentId);
+}
+const _origCloseModalOrg = closeModal;
+window.closeModal = function(){
+  if(state.organogram && state.organogram.nodes){
+    state.organogram.nodes = state.organogram.nodes.filter(n=>!(n._draft && !n.title));
+  }
+  _origCloseModalOrg();
+};
+function deleteOrgNode(id){
+  const n = state.organogram.nodes.find(x=>x.id===id);
+  if(!n) return;
+  const allDesc = [];
+  function collect(pid){ state.organogram.nodes.filter(x=>x.parentId===pid).forEach(c=>{ allDesc.push(c.id); collect(c.id); }); }
+  collect(id);
+  const msg = allDesc.length ? `Delete "${n.title}" and ${allDesc.length} block(s) below it?` : `Delete "${n.title}"?`;
+  if(!confirm(msg)) return;
+  const toRemove = new Set([id, ...allDesc]);
+  state.organogram.nodes = state.organogram.nodes.filter(x=>!toRemove.has(x.id));
+  save(); closeModal(); renderers.organogram();
+}
 function loadBroadcastTemplate(){
   const id = document.getElementById('bc-template').value; if(!id) return;
   const b = (state.broadcasts||[]).find(x=>x.id===id); if(!b) return;
