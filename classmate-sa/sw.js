@@ -2,7 +2,7 @@
    Caches the app on first visit so future visits open instantly with no internet.
    Important for SA schools where data is expensive and connectivity uneven. */
 
-const CACHE = 'classmate-sa-v30';
+const CACHE = 'classmate-sa-v31';
 const SHELL = ['./', './index.html'];
 
 self.addEventListener('install', function(e){
